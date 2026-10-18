@@ -510,6 +510,7 @@ class ExhibitionSession {
   /** The opening view keeps every marker inside the clear part of the screen. */
   private homeState(): CameraState {
     let interest: Rect = { x: 0, y: 0, width: this.imageWidth, height: this.imageHeight };
+    let center: Point | undefined;
     if (this.regions.size > 0) {
       let minX = Infinity;
       let minY = Infinity;
@@ -528,8 +529,22 @@ class ExhibitionSession {
       maxX = Math.min(this.imageWidth, maxX + padX);
       maxY = Math.min(this.imageHeight, maxY + padY);
       interest = { x: minX, y: minY, width: maxX - minX, height: maxY - minY };
+      const viewport = this.camera.getViewport();
+      if (viewport.width < viewport.height) {
+        // A portrait screen shows a slice of the picture: start on the marker nearest its middle.
+        const midX = interest.x + interest.width / 2;
+        const midY = interest.y + interest.height / 2;
+        let best = Infinity;
+        for (const region of this.regions.values()) {
+          const distance = Math.hypot(region.anchor.x - midX, region.anchor.y - midY);
+          if (distance < best) {
+            best = distance;
+            center = region.anchor;
+          }
+        }
+      }
     }
-    return this.camera.homeState(interest, this.safeArea());
+    return this.camera.homeState(interest, this.safeArea(), center);
   }
 
   private safeArea(): Rect {

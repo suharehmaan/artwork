@@ -167,7 +167,7 @@ export class CameraController {
    * `interest` rectangle (the scene's points of interest) leaves the safe area.
    * On a portrait screen the picture fills the safe height and can be dragged sideways.
    */
-  homeState(interest: Rect, safe: Rect): CameraState {
+  homeState(interest: Rect, safe: Rect, center?: Point): CameraState {
     const cover = Math.max(
       this.viewport.width / this.worldSize.width,
       this.viewport.height / this.worldSize.height,
@@ -181,11 +181,22 @@ export class CameraController {
       zoom = Math.max(zoom, Math.min(cover, safe.height / this.worldSize.height));
     }
     zoom = this.clampZoom(zoom);
-    return this.clampState({
+    const focusX = center?.x ?? interest.x + interest.width / 2;
+    const focusY = center?.y ?? interest.y + interest.height / 2;
+    // No paper margin on an axis the picture already covers.
+    return {
       zoom,
-      x: safe.x + safe.width / 2 - (interest.x + interest.width / 2) * zoom,
-      y: safe.y + safe.height / 2 - (interest.y + interest.height / 2) * zoom,
-    });
+      x: coverAxis(
+        safe.x + safe.width / 2 - focusX * zoom,
+        this.worldSize.width * zoom,
+        this.viewport.width,
+      ),
+      y: coverAxis(
+        safe.y + safe.height / 2 - focusY * zoom,
+        this.worldSize.height * zoom,
+        this.viewport.height,
+      ),
+    };
   }
 
   /**
@@ -315,6 +326,14 @@ export class CameraController {
     this.world.scale.set(state.zoom);
     this.onChange?.(this.getState());
   }
+}
+
+/** Centres a picture smaller than the viewport, otherwise keeps it edge to edge. */
+function coverAxis(offset: number, size: number, viewport: number): number {
+  if (size <= viewport) {
+    return (viewport - size) / 2;
+  }
+  return Math.min(0, Math.max(viewport - size, offset));
 }
 
 /**

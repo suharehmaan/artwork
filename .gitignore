@@ -1,0 +1,23 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# next
+/.next/
+/out/
+next-env.d.ts
+
+# misc
+.DS_Store
+*.pem
+npm-debug.log*
+.vercel
+
+# typescript
+*.tsbuildinfo

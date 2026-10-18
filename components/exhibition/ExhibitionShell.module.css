@@ -1,0 +1,297 @@
+.shell {
+  --edge: 16px;
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.viewport {
+  position: absolute;
+  inset: 0;
+}
+
+.viewport :global(.exhibition-canvas-host) {
+  position: absolute;
+  inset: 0;
+  outline: none;
+  touch-action: none;
+}
+
+.viewport :global(.exhibition-canvas-host:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+
+.viewport :global(.exhibition-canvas-loading) {
+  margin: 0;
+  position: absolute;
+  left: var(--edge);
+  bottom: var(--edge);
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* Shared surface for the floating plates. */
+.title,
+.back,
+.quiet,
+.toggle,
+.loading,
+.error {
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  background: var(--surface-float);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  font-family: var(--sans);
+}
+
+.bar {
+  position: absolute;
+  z-index: 3;
+  top: var(--edge);
+  left: var(--edge);
+  right: var(--edge);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  pointer-events: none;
+  transition: right 220ms ease;
+}
+
+.cluster,
+.secondary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.secondary {
+  flex: none;
+}
+
+.title {
+  margin: 0;
+  min-height: 36px;
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 8px 12px 7px;
+  pointer-events: auto;
+}
+
+.exhibition {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.scene {
+  padding-left: 10px;
+  border-left: 1px solid var(--line-strong);
+  font-size: 13px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.back,
+.quiet,
+.error button {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  font-size: 13px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.back svg {
+  width: 16px;
+  height: 16px;
+  margin-left: -4px;
+}
+
+/* Explore and Help stay available but recede behind the picture. */
+.quiet {
+  border-color: transparent;
+  background: rgba(251, 248, 242, 0.78);
+  box-shadow: none;
+  color: var(--ink-soft);
+}
+
+.back:hover,
+.quiet:hover,
+.toggle:hover {
+  background: var(--surface);
+  border-color: var(--line-strong);
+}
+
+.dockStart,
+.dockEnd {
+  position: absolute;
+  z-index: 3;
+  bottom: var(--edge);
+  display: flex;
+  pointer-events: none;
+  transition: right 220ms ease;
+}
+
+.dockStart {
+  left: var(--edge);
+}
+
+.dockEnd {
+  right: var(--edge);
+}
+
+.toggle {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px 0 10px;
+  font-size: 13px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.toggle svg {
+  width: 16px;
+  height: 16px;
+  color: var(--muted);
+}
+
+.toggle[aria-pressed="true"] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--surface);
+}
+
+.toggle[aria-pressed="true"] svg {
+  color: var(--surface);
+}
+
+/* Keep floating controls clear of the open side panel. */
+.shell[data-story="open"][data-compact="false"] .bar {
+  right: calc(var(--panel-w) + var(--edge) * 2);
+}
+
+.shell[data-story="open"][data-compact="false"] .dockEnd {
+  right: calc(var(--panel-w) + var(--edge) * 2);
+}
+
+.loading,
+.error {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: var(--edge);
+  transform: translateX(-50%);
+  margin: 0;
+  max-width: min(420px, calc(100% - 32px));
+  padding: 9px 12px;
+  font-size: 14px;
+  pointer-events: none;
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.error p {
+  margin: 0;
+}
+
+.wide {
+  display: inline;
+}
+
+.debug {
+  position: absolute;
+  z-index: 8;
+  left: var(--edge);
+  bottom: 64px;
+  margin: 0;
+  padding: 8px 10px;
+  border: 1px solid #d23c6e;
+  border-radius: 6px;
+  background: var(--surface);
+  color: #9c1f4b;
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+}
+
+@media (max-width: 720px) {
+  .shell {
+    --edge: 12px;
+  }
+
+  .exhibition {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .scene {
+    padding-left: 0;
+    border-left: 0;
+    color: var(--ink);
+  }
+
+  /* The visible label shortens; the accessible name stays complete. */
+  .wide {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .dockStart,
+  .dockEnd {
+    bottom: calc(var(--edge) + env(safe-area-inset-bottom));
+  }
+
+  /* The bottom sheet takes this space while a story is open. */
+  .shell[data-story="open"] .dockStart,
+  .shell[data-story="open"] .dockEnd {
+    visibility: hidden;
+  }
+
+  .loading,
+  .error {
+    bottom: 68px;
+  }
+}
+
+@media (pointer: coarse) {
+  .back,
+  .quiet,
+  .toggle,
+  .title,
+  .error button {
+    min-height: 44px;
+  }
+}

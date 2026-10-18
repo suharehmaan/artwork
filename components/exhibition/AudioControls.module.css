@@ -1,0 +1,144 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  pointer-events: auto;
+  position: relative;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.iconButton,
+.textButton {
+  border: 1px solid var(--line-strong);
+  background: var(--surface-float);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  border-radius: 6px;
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.iconButton {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
+.iconButton svg {
+  width: 16px;
+  height: 16px;
+}
+
+.textButton {
+  min-height: 36px;
+  padding: 0 12px;
+}
+
+.iconButton:hover,
+.textButton:hover {
+  background: var(--surface);
+}
+
+.iconButton:disabled,
+.textButton:disabled {
+  color: var(--faint);
+  cursor: not-allowed;
+}
+
+.message {
+  margin: 0;
+  max-width: 280px;
+  font-family: var(--sans);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--warning);
+  text-align: right;
+}
+
+.panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: min(340px, calc(100vw - 32px));
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  box-shadow: var(--shadow-raised);
+  text-align: left;
+  z-index: 5;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.kicker {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.title {
+  margin: 8px 0;
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.transcript {
+  margin: 8px 0 0;
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.panel .message {
+  text-align: left;
+  max-width: none;
+}
+
+@media (pointer: coarse) {
+  .iconButton,
+  .textButton {
+    min-height: 44px;
+  }
+
+  .iconButton {
+    width: 44px;
+  }
+}
+
+@media (max-width: 720px) {
+  .panel {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    width: 100%;
+    border-radius: 6px 6px 0 0;
+  }
+
+  .message {
+    text-align: left;
+  }
+}

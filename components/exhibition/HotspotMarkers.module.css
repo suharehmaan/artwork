@@ -1,0 +1,121 @@
+.layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* A 44px invisible target centred on the anchor, around a small visible disc. */
+.marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  pointer-events: auto;
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.marker:focus-visible {
+  outline: none;
+}
+
+.disc {
+  width: 14px;
+  height: 14px;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: 0 1px 4px rgba(20, 18, 15, 0.35);
+  transition:
+    width 160ms ease,
+    height 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.disc svg {
+  width: 15px;
+  height: 15px;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+.marker:hover .disc,
+.marker:focus-visible .disc,
+.marker[data-active="true"] .disc,
+.marker[data-selected="true"] .disc,
+.layer[data-labels="all"] .disc {
+  width: 30px;
+  height: 30px;
+  border-width: 1px;
+}
+
+.marker:hover .disc svg,
+.marker:focus-visible .disc svg,
+.marker[data-active="true"] .disc svg,
+.marker[data-selected="true"] .disc svg,
+.layer[data-labels="all"] .disc svg {
+  opacity: 1;
+}
+
+.marker:focus-visible .disc {
+  box-shadow:
+    0 0 0 2px var(--surface),
+    0 0 0 4px var(--focus);
+}
+
+.marker[data-selected="true"] .disc {
+  background: var(--ink);
+  color: var(--surface);
+}
+
+.label {
+  position: absolute;
+  top: 50%;
+  left: calc(50% + 20px);
+  padding: 5px 9px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.2;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-4px, -50%);
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease;
+  pointer-events: none;
+}
+
+.marker[data-side="left"] .label {
+  left: auto;
+  right: calc(50% + 20px);
+  transform: translate(4px, -50%);
+}
+
+.marker:hover .label,
+.marker:focus-visible .label,
+.marker[data-active="true"] .label,
+.marker[data-selected="true"] .label,
+.layer[data-labels="all"] .label {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
